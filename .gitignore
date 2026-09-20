@@ -1,5 +1,5 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
+*.log
 # dependencies
 /node_modules
 /.pnp
@@ -30,8 +30,12 @@ yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# env files (allow .env.example)
+.env
+.env*.local
+backend/.env
+!.env.example
+!backend/.env.example
 
 # vercel
 .vercel
@@ -39,3 +43,13 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# python / backend
+__pycache__/
+*.py[cod]
+*$py.class
+venv/
+backend/venv/
+*.db
+*.sqlite
+*.sqlite3
