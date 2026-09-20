@@ -1,86 +1,107 @@
 # 🌱 Botanical Lab — Smart Plant Monitor
 
-> An IoT-based smart plant monitoring and automated irrigation system built with ESP32, environmental sensors, FastAPI, PostgreSQL/Supabase, Next.js, and Telegram.
+An IoT-based smart plant monitoring and automated irrigation system built using **ESP32, sensors, FastAPI, PostgreSQL/Supabase, Next.js, and Telegram**.
 
-Botanical Lab is a full-stack IoT system designed to continuously monitor plant and environmental conditions and intelligently manage irrigation.
+## ✨ Features
 
-The system collects sensor data from an ESP32, sends it to a FastAPI backend, stores telemetry in PostgreSQL through Supabase, processes sensor conditions through an alert and irrigation engine, and presents the information through a real-time web dashboard.
+- 🌱 Soil moisture monitoring
+- 🌧️ Rain detection
+- 🌡️ Temperature & humidity monitoring
+- 💧 Water tank level monitoring
+- ☀️ Light monitoring
+- 🚰 Automatic irrigation using a relay-controlled pump
+- 📊 Real-time sensor dashboard
+- 📈 Sensor signal filtering and visualization
+- 🚨 Automatic alerts
+- 📱 Telegram notifications
+- 🗄️ Supabase PostgreSQL database
 
----
+## 🔧 Hardware
 
-## 📌 Table of Contents
+- ESP32
+- FC-28 Soil Moisture Sensor
+- Rain Sensor
+- DHT11
+- HC-SR04 Ultrasonic Sensor
+- LDR
+- Relay Module
+- DC Water Pump
+- 16×2 LCD
 
-- [Overview](#-overview)
-- [Problem Statement](#-problem-statement)
-- [Solution](#-solution)
-- [Key Features](#-key-features)
-- [System Architecture](#-system-architecture)
-- [Hardware](#-hardware)
-- [Hardware Connections](#-hardware-connections)
-- [Irrigation Logic](#-irrigation-logic)
-- [Alert System](#-alert-system)
-- [Signal Processing](#-signal-processing)
-- [Software Architecture](#-software-architecture)
-- [Database](#-database)
-- [API](#-api)
-- [Telegram Notifications](#-telegram-notifications)
-- [Dashboard](#-dashboard)
-- [Project Structure](#-project-structure)
-- [Getting Started](#-getting-started)
-- [Environment Variables](#-environment-variables)
-- [Running the Project](#-running-the-project)
-- [Testing](#-testing)
-- [Security](#-security)
-- [Design Decisions](#-design-decisions)
-- [Limitations](#-limitations)
-- [Future Improvements](#-future-improvements)
-- [License](#-license)
-
----
-
-# 🌿 Overview
-
-Botanical Lab combines embedded hardware, backend services, database storage, signal processing, automation, and a web interface into a single plant monitoring platform.
-
-The system monitors five primary environmental parameters:
-
-| Parameter | Sensor | Purpose |
-|---|---|---|
-| Soil Moisture | FC-28 | Determines whether the soil is dry |
-| Rain | Rain Sensor | Prevents unnecessary watering during rain |
-| Temperature & Humidity | DHT11 | Environmental monitoring |
-| Tank Level | HC-SR04 | Determines whether sufficient water is available |
-| Light | LDR | Measures ambient light |
-
-The irrigation system uses a relay-controlled DC water pump.
+## 🏗️ Architecture
 
 ```text
-                    ┌─────────────────────┐
-                    │        ESP32        │
-                    │                     │
-                    │  Soil Moisture      │
-                    │  Rain Sensor        │
-                    │  DHT11              │
-                    │  HC-SR04            │
-                    │  LDR                │
-                    └──────────┬──────────┘
-                               │
-                         Sensor Data
-                               │
-                               ▼
-                    ┌─────────────────────┐
-                    │       FastAPI       │
-                    │      Backend        │
-                    │                     │
-                    │  Alert Engine       │
-                    │  Irrigation Logic   │
-                    │  SSE Events        │
-                    └──────────┬──────────┘
-                               │
-              ┌────────────────┼────────────────┐
-              │                │                │
-              ▼                ▼                ▼
-       ┌─────────────┐  ┌─────────────┐  ┌────────────┐
-       │  Supabase   │  │  Next.js    │  │  Telegram  │
-       │ PostgreSQL  │  │  Dashboard  │  │    Bot     │
-       └─────────────┘  └─────────────┘  └────────────┘
+Sensors
+   ↓
+ESP32
+   ↓
+FastAPI Backend
+   ↓
+┌──────────────┬──────────────┐
+│   Supabase   │   Dashboard  │
+│  PostgreSQL  │   Next.js    │
+└──────────────┴──────────────┘
+        ↓
+     Telegram
+💧 Irrigation Logic
+
+The pump automatically turns ON when:
+
+Soil is dry
++ No rain
++ Sufficient tank water
+
+It turns OFF when:
+
+Soil is sufficiently wet
+OR Rain is detected
+OR Tank level is too low
+
+Soil moisture hysteresis:
+
+Start watering: < 30%
+Stop watering: ≥ 45%
+💻 Tech Stack
+Layer	Technology
+Hardware	ESP32
+Frontend	Next.js + TypeScript
+Styling	Tailwind CSS
+Backend	FastAPI + Python
+Database	PostgreSQL / Supabase
+Charts	Recharts
+Notifications	Telegram Bot API
+Testing	Pytest
+🚀 Run Locally
+Backend
+.\backend\venv\Scripts\python.exe -m uvicorn app.main:app --reload --port 8000 --app-dir backend
+Frontend
+npm.cmd run dev
+
+Open:
+
+http://localhost:3000
+
+API documentation:
+
+http://127.0.0.1:8000/docs
+🔐 Environment Variables
+
+Create your local environment files using:
+
+.env.example
+backend/.env.example
+
+Never commit .env files or API credentials.
+
+📌 Future Improvements
+Machine-learning-based irrigation prediction
+Weather API integration
+Multi-plant support
+Mobile application
+Cloud deployment
+Low-power/battery operation
+📜 License
+
+MIT License
+
+Botanical Lab — Sense → Process → Decide → Act → Notify 🌱
