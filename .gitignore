@@ -1,0 +1,12 @@
+
+# Botanical Lab: credentials and local secrets
+.env
+.env.*
+!.env.example
+**/secrets.h
+
+# Generated files
+**/node_modules/
+**/.next/
+**/dist/
+**/build/
